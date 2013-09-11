@@ -1,0 +1,37 @@
+doctype 5
+html
+  head
+    title= title
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible' content='IE=edge')
+    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body(class='#{bodyClass}')
+
+    div.navbar.navbar-inverse.navbar-fixed-top.bs-docs-nav
+      div.collapse.navbar-collapse.bs-navbar-collapse
+        div.navbar-header
+          a(data-toggle='collapse', data-target='.nav-collapse').btn.btn-navbar
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a(href='/').navbar-brand #{brand}
+        ul.nav.navbar-nav
+          - each val, key in navbar
+            - if (id == val.href)
+              li.active
+                a(href='#{val.href}') #{val.titel}
+            - else
+              li
+                a(href='#{val.href}') #{val.titel}
+
+    block content
+
+    div.container
+      div.bs-social
+      ul.bs-masthead-links
+        li.current-version #{brand} v#{version}
+
+    script(src='/javascripts/jquery.min.js')
+    script(src='/javascripts/bootstrap.min.js')
+    script(src='/javascripts/main.js')

@@ -1,0 +1,28 @@
+extends layout
+
+block content
+  div.bs-docs-container
+    div.row
+      div.col-md-3
+        div.bs-sidebar.hidden-print.affix-top
+          ul.nav.bs-sidenav
+            - each thema, themaID in fragen
+                li
+                  a(href='##{themaID}') #{thema.titel}
+      div.col-md-9#content
+        div.page-header
+          h1 Fragen
+        p.lead Alle Fragen die bereits eingereicht wurden können Sie hier einsehen. Um neue einzureichen bitte dem Link unten folgen! 
+          a(href='/rss/fragen') Bleibe Sie auf dem neuesten Stand 
+          span Sie wollen eine neue Frage stellen? <a href="http://fdf.vdew.net/wysvde/dataforum.nsf/Frage?OpenForm&login" target="_blank">Hier</a> geht's zur richtigen Seite.
+        - each thema, themaID in fragen
+          div.bs-docs-section
+            h3(id='#{themaID}') #{thema.titel}
+            div.row
+              div.col-md-5
+                ul
+                  - each frage in thema.fragen
+                    li
+                      a(href='/fragen/#{frage.hash}') #{frage.frage}
+                        p #{frage.kurzantwort}
+              div.col-md-7

@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  div.bs-header#content
+    div.container
+      h1 Anforderungen
+      p Hier können alle eingerichten Anforderungen eingesehen werden. Um neue einzureichen bitte dem Link unten folgen!
+  div.bs-old-docs
+    div.container
+      strong
+        a(href='/rss/anforderungen') Bleibe Sie auf dem neuesten Stand 
+      span Sie möchte eine neue Anforderung einrichen? <a href="http://fdf.vdew.net/wysvde/dataforum.nsf/Anforderung?OpenForm&login" target="_blank">Hier</a> geht's zur richtigen Seite.
+  div.container.bs-docs-container
+    div.row
+      div.col-md-3
+        div.bs-sidebar.hidden-print.affix-top
+          ul.nav.bs-sidenav
+            - each thema, themaID in anforderungen
+                li
+                  a(href='##{themaID}') #{thema.titel}
+      div.col-md-9
+        div.bs-docs-section
+          - each thema, themaID in anforderungen
+            div.page-header
+              h1(id='#{themaID}') #{thema.titel}
+            ul
+              - each anforderung in thema.anforderungen
+                li
+                  a(href='/anforderungen/#{anforderung.hash}') #{anforderung.problembeschreibung}
+                  p #{anforderung.kurzantwort}
