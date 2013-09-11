@@ -5,14 +5,15 @@
   "scripts": {
     "start": "node app.js"
   },
+  "engine": "node >= 0.4.1",
   "dependencies": {
     "express": "3.3.8",
     "jade": "*",
     "less-middleware": "*",
     "async": "*",
-    "cheerio": "*"
-    "feed": "*"
-    "request": "*"
+    "cheerio": "*",
+    "feed": "*",
+    "request": "*",
     "underscore": "*"
   }
 }
