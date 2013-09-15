@@ -22,7 +22,7 @@
 
     // back to top
     setTimeout(function () {
-      var $sideBar = $('.bs-sidebar')
+      var $sideBar = $('.bs-sidebar');
 
       $sideBar.affix({
         offset: {
@@ -34,7 +34,7 @@
             return (this.top = offsetTop - navOuterHeight - sideBarMargin)
           }
         , bottom: function () {
-            return (this.bottom = $('.bs-footer').outerHeight(true))
+            return (this.bottom = $('#footer').outerHeight(true))
           }
         }
       })

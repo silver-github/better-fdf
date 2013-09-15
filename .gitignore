@@ -1,0 +1,12 @@
+.idea
+*.iml
+*.ipr
+*.iws
+*.tmproj
+.project
+.settings
+.externalToolBuilders
+*.swp
+node_modules
+*~
+/.c9revisions/

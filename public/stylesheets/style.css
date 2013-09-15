@@ -41,6 +41,20 @@ body {
 
 #content {
   background-color: #fff;
+  overflow: hidden;
+  padding-left: 20px;
+  padding-right: 20px;
+  overflow: hidden;
+}
+
+.bs-header {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.bs-masthead {
+  padding-top: 85px;
+  padding-bottom: 85px;
 }
 
 /*
@@ -56,9 +70,8 @@ body {
 }
 /* First level of nav */
 .bs-sidenav {
-  margin-top: 30px;
+  margin-top: 20px;
   margin-bottom: 30px;
-  margin-left: 25px;
   padding-top:    10px;
   padding-bottom: 10px;
   text-shadow: 0 1px 0 #fff;
@@ -99,8 +112,29 @@ body {
   font-size: 90%;
 }
 
+.bs-docs-section {
+  overflow: hidden;
+  padding: 35px;
+  background-color: #fff;
+  margin-top: 20px;
+}
+
+.bs-docs-section2 {
+  overflow: hidden;
+  padding: 35px;
+  background-color: #fff;
+}
+
+.bs-old-docs {
+  background: none repeat scroll 0 0 #BDC3C7;
+  padding: 13px 20px;
+}
+
 /* Show and affix the side nav when space allows it */
 @media screen and (min-width: 992px) {
+  .bs-sidenav {
+    width: 268px;
+  }
   .bs-sidebar .nav > .active > ul {
     display: block;
   }
@@ -121,6 +155,8 @@ body {
 
 .bs-docs-section ul, .bs-docs-section li {
   list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
 .bs-docs-section li a { 
@@ -137,4 +173,52 @@ body {
   background-color: #ecf0f1;
   color: #777;
   text-decoration: none;
+}
+
+.bs-social-buttons {
+  display: inline-block;
+  margin-bottom: 0;
+  padding-left: 0;
+  list-style: none;
+  float: right;
+}
+.bs-social-buttons li {
+  display: inline-block;
+  line-height: 1;
+  padding: 0;
+}
+.bs-social-buttons .twitter-follow-button {
+  width: 225px !important;
+}
+.bs-social-buttons .twitter-share-button {
+  width: 98px !important;
+}
+/* Style the GitHub buttons via CSS instead of inline attributes */
+.github-btn {
+  border: 0;
+  overflow: hidden;
+}
+
+@media screen and (min-width: 768px) {
+  .bs-social {
+    text-align: left;
+  }
+  .bs-social-buttons li:first-child {
+    padding-left: 0;
+  }
+}
+
+#footer {
+    background-color: #F5F5F5;
+    height: 60px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+.container .credit {
+    margin: 20px 0;
+}
+#footer > .container {
+    padding-left: 15px;
+    padding-right: 15px;
 }

@@ -1,16 +1,16 @@
 extends layout
 
-block content
+block header
   div.bs-header#content
-    div.container
-      h1 Anforderungen
-      p Hier können alle eingerichten Anforderungen eingesehen werden. Um neue einzureichen bitte dem Link unten folgen!
+    h1 Anforderungen
+    p Hier können alle eingerichten Anforderungen eingesehen werden. Um neue einzureichen bitte dem Link unten folgen!
   div.bs-old-docs
-    div.container
-      strong
-        a(href='/rss/anforderungen') Bleibe Sie auf dem neuesten Stand 
-      span Sie möchte eine neue Anforderung einrichen? <a href="http://fdf.vdew.net/wysvde/dataforum.nsf/Anforderung?OpenForm&login" target="_blank">Hier</a> geht's zur richtigen Seite.
-  div.container.bs-docs-container
+    strong
+      a(href='/rss/anforderungen') Bleibe Sie auf dem neuesten Stand
+    span  Sie möchte eine neue Anforderung einrichen? <a href="http://fdf.vdew.net/wysvde/dataforum.nsf/Anforderung?OpenForm&login" target="_blank">Hier</a> geht's zur richtigen Seite.
+
+block content
+  div.bs-docs-container
     div.row
       div.col-md-3
         div.bs-sidebar.hidden-print.affix-top
@@ -27,4 +27,4 @@ block content
               - each anforderung in thema.anforderungen
                 li
                   a(href='/anforderungen/#{anforderung.hash}') #{anforderung.problembeschreibung}
-                  p #{anforderung.kurzantwort}
+                    p #{anforderung.kurzantwort}

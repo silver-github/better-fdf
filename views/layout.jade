@@ -8,30 +8,34 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
   body(class='#{bodyClass}')
 
-    div.navbar.navbar-inverse.navbar-fixed-top.bs-docs-nav
-      div.collapse.navbar-collapse.bs-navbar-collapse
-        div.navbar-header
-          a(data-toggle='collapse', data-target='.nav-collapse').btn.btn-navbar
-            span.icon-bar
-            span.icon-bar
-            span.icon-bar
-          a(href='/').navbar-brand #{brand}
-        ul.nav.navbar-nav
-          - each val, key in navbar
-            - if (id == val.href)
-              li.active
-                a(href='#{val.href}') #{val.titel}
-            - else
-              li
-                a(href='#{val.href}') #{val.titel}
-
-    block content
-
     div.container
-      div.bs-social
-      ul.bs-masthead-links
-        li.current-version #{brand} v#{version}
+      div.navbar.navbar-inverse.bs-docs-nav
+        div.collapse.navbar-collapse.bs-navbar-collapse
+          div.navbar-header
+            a(data-toggle='collapse', data-target='.nav-collapse').btn.btn-navbar
+              span.icon-bar
+              span.icon-bar
+              span.icon-bar
+            a(href='/').navbar-brand #{brand}
+          ul.nav.navbar-nav
+            - each val, key in navbar
+              - if (id == val.href)
+                li.active
+                  a(href='#{val.href}') #{val.titel}
+              - else
+                li
+                  a(href='#{val.href}') #{val.titel}
+      block header
+      block content
+      div#footer
+        div.row.text-muted.credit
+          div.col-md-9
+            p Erstellt mit <a href="http://getbootstrap.com/">Bootstrap</a> und <a href="http://nodejs.org/">NodeJS</a>. #{brand} v#{version}
+          div.col-md-3.bs-social
+            ul.bs-social-buttons
+              li <iframe width="100" height="20" title="Star on GitHub" src="http://ghbtns.com/github-btn.html?user=silver-github&repo=better-fdf&type=watch&count=true" class="github-btn"></iframe>
+              li <iframe width="102" height="20" title="Fork on GitHub" src="http://ghbtns.com/github-btn.html?user=silver-github&repo=better-fdf&type=fork&count=true" class="github-btn"></iframe>
 
-    script(src='/javascripts/jquery.min.js')
-    script(src='/javascripts/bootstrap.min.js')
-    script(src='/javascripts/main.js')
+  script(src='/javascripts/jquery.min.js')
+  script(src='/javascripts/bootstrap.min.js')
+  script(src='/javascripts/main.js')

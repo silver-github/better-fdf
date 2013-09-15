@@ -262,7 +262,8 @@ module.exports = (function() {
 	}
 
 	var shortLongString = function(text, lenght) {
-		return text.substring(0, lenght || 110) + '...';
+		if(!lenght) {return;}
+		return text.substring(0, lenght) + '...';
 	}
 
 	var removeBR = function(text) {
@@ -271,7 +272,7 @@ module.exports = (function() {
 
 	var fetcher = {
 		events: eventEmitter,
-		getFragen: function() {
+		getFragen: function(lenght) {
 
 			var result = {};
 
@@ -284,7 +285,7 @@ module.exports = (function() {
 					thema.fragen.push({
 						hash: entry.hash,
 						timestamp: entry.timestamp,
-						frage: removeBR(entry.frage),
+						frage: shortLongString(removeBR(entry.frage), lenght),
 						kurzantwort: removeBR(entry.kurzantwort)
 					});
 				}
@@ -294,7 +295,7 @@ module.exports = (function() {
 			return result;
 
 		},
-		getAnforderungen: function() {
+		getAnforderungen: function(lenght) {
 
 			var result = {};
 
@@ -307,7 +308,7 @@ module.exports = (function() {
 					thema.anforderungen.push({
 						hash: entry.hash, 
 						timestamp: entry.timestamp, 
-						problembeschreibung: removeBR(entry.problembeschreibung), 
+						problembeschreibung: shortLongString(removeBR(entry.problembeschreibung), lenght), 
 						kurzantwort: removeBR(entry.kurzantwort)
 					});
 				}

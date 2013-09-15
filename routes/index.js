@@ -30,10 +30,10 @@ module.exports = {
   codenummern:          require('./codenummern')(data, fetcher),
   codenummernDetails:   require('./codenummernDetails')(data, fetcher),
   rss: {
-	fragen: function(req, res) {
-	
-	var fragen = fetcher.getFragen();
-	
+  fragen: function(req, res) {
+  
+  var fragen = fetcher.getFragen();
+  
     var feed = new Feed({
         title:          'Fragen',
         description:    'Alle Fragen die bereits eingereicht wurden können Sie hier einsehen. ',
@@ -47,33 +47,33 @@ module.exports = {
             link:       'http://fdf.vdew.net'
         }
     });
-	
-	for(var themaID in fragen) {
-		
-		for(var name in fragen[themaID].fragen) {
-			
-			feed.item({
-				title:          fragen[themaID].titel,
-				link:           'http://fdf.rguttroff.de/anforderungen/' + fragen[themaID].fragen[name].hash,
-				description:    fragen[themaID].fragen[name].frage,
-				date:           new Date(fragen[themaID].fragen[name].timestamp * 1000) || new Date()
-			});
-		
-		}
-	
-	}
-	
-	res.set('Content-Type', 'text/xml');
+  
+  for(var themaID in fragen) {
+    
+    for(var name in fragen[themaID].fragen) {
+      
+      feed.item({
+        title:          fragen[themaID].titel,
+        link:           'http://fdf.rguttroff.de/anforderungen/' + fragen[themaID].fragen[name].hash,
+        description:    fragen[themaID].fragen[name].frage,
+        date:           new Date(fragen[themaID].fragen[name].timestamp * 1000) || new Date()
+      });
+    
+    }
+  
+  }
+  
+  res.set('Content-Type', 'text/xml');
 
-	// Sending the feed as a response
-	res.send(feed.render('rss-2.0'));
+  // Sending the feed as a response
+  res.send(feed.render('rss-2.0'));
 
-	
-	},
-	anforderungen: function(req, res) {
-	
-	var anforderungen = fetcher.getAnforderungen();
-	
+  
+  },
+  anforderungen: function(req, res) {
+  
+  var anforderungen = fetcher.getAnforderungen();
+  
     var feed = new Feed({
         title:          'Anforderungen',
         description:    'Hier können alle eingerichten Anforderungen eingesehen werden.',
@@ -87,27 +87,27 @@ module.exports = {
             link:       'http://fdf.vdew.net'
         }
     });
-	
-	for(var themaID in anforderungen) {
-		
-		for(var name in anforderungen[themaID].anforderungen) {
-		
-			feed.item({
-				title:          anforderungen[themaID].titel,
-				link:           'http://fdf.rguttroff.de/anforderungen/' + anforderungen[themaID].anforderungen[name].hash,
-				description:    anforderungen[themaID].anforderungen[name].problembeschreibung,
-				date:           new Date(anforderungen[themaID].anforderungen[name].timestamp * 1000) || new Date()
-			});
-		
-		}
-	
-	}
+  
+  for(var themaID in anforderungen) {
+    
+    for(var name in anforderungen[themaID].anforderungen) {
+    
+      feed.item({
+        title:          anforderungen[themaID].titel,
+        link:           'http://fdf.rguttroff.de/anforderungen/' + anforderungen[themaID].anforderungen[name].hash,
+        description:    anforderungen[themaID].anforderungen[name].problembeschreibung,
+        date:           new Date(anforderungen[themaID].anforderungen[name].timestamp * 1000) || new Date()
+      });
+    
+    }
+  
+  }
 
-	res.set('Content-Type', 'text/xml');
+  res.set('Content-Type', 'text/xml');
 
-	// Sending the feed as a response
-	res.send(feed.render('rss-2.0'));
-	
-	},
+  // Sending the feed as a response
+  res.send(feed.render('rss-2.0'));
+  
+  },
   }
 }
