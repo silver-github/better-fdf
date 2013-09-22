@@ -23,8 +23,13 @@ block content
           - each thema, themaID in fragen
             div.page-header
               h1(id='#{themaID}') #{thema.titel}
-            ul
-              - each frage in thema.fragen
-                li
-                  a(href='/fragen/#{frage.hash}') #{frage.frage}
+            dl.dl-horizontal
+              - each fragen, datum in thema.fragenByDatum
+                dt #{datum}
+                dd
+                  - each frage in fragen
+                    a(href='/fragen/#{frage.hash}') #{frage.frage}
                     p #{frage.kurzantwort}
+                    p
+                      - each tag in frage.tags
+                        button.btn.btn-mini.btn-info(type="button" class='#{tag.class}') #{tag.text}

@@ -54,7 +54,7 @@ module.exports = {
       
       feed.item({
         title:          fragen[themaID].titel,
-        link:           'http://fdf.rguttroff.de/anforderungen/' + fragen[themaID].fragen[name].hash,
+        link:           'http://fdf.rguttroff.de/fragen/' + fragen[themaID].fragen[name].hash,
         description:    fragen[themaID].fragen[name].frage,
         date:           new Date(fragen[themaID].fragen[name].timestamp * 1000) || new Date()
       });

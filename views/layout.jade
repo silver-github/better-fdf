@@ -13,11 +13,12 @@ html
         div.collapse.navbar-collapse.bs-navbar-collapse
           div.navbar-header
             a(data-toggle='collapse', data-target='.nav-collapse').btn.btn-navbar
+              span.sr-only Toggle navigation
               span.icon-bar
               span.icon-bar
               span.icon-bar
             a(href='/').navbar-brand #{brand}
-          ul.nav.navbar-nav
+          ul.nav.navbar-nav.bs-navbar-collapse
             - each val, key in navbar
               - if (id == val.href)
                 li.active

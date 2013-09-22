@@ -23,8 +23,13 @@ block content
           - each thema, themaID in anforderungen
             div.page-header
               h1(id='#{themaID}') #{thema.titel}
-            ul
-              - each anforderung in thema.anforderungen
-                li
-                  a(href='/anforderungen/#{anforderung.hash}') #{anforderung.problembeschreibung}
+            dl.dl-horizontal
+              - each anforderungen, datum in thema.anforderungenByDatum
+                dt #{datum}
+                dd
+                  - each anforderung in anforderungen
+                    a(href='/anforderungen/#{anforderung.hash}') #{anforderung.problembeschreibung}
                     p #{anforderung.kurzantwort}
+                    p
+                      - each tag in anforderung.tags
+                        button.btn.btn-mini.btn-info(type="button" class='#{tag.class}') #{tag.text}

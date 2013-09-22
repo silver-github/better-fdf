@@ -1,5 +1,35 @@
 extends layout
 
+block header
+  div.bs-header#content
+    h1 Dokmente
+    p ####
+  div.bs-old-docs
+    strong
+      a(href='/rss/dokumente') ####
+    span  Sie möchte eine neue Anforderung einrichen? <a href="http://fdf.vdew.net/wysvde/dataforum.nsf/Anforderung?OpenForm&login" target="_blank">Hier</a> geht's zur richtigen Seite.
+
 block content
-  h1= title
-  p Welcome to #{title}
+  div.bs-docs-container
+    div.row
+      div.col-md-3
+        div.bs-sidebar.hidden-print.affix-top
+          ul.nav.bs-sidenav
+            - each thema, themaID in dokumente
+                li
+                  a(href='##{themaID}') #{thema.titel}
+      div.col-md-9
+        div.bs-docs-section
+          - each thema, themaID in dokumente
+            div.page-header
+              h1(id='#{themaID}') #{thema.titel}
+            dl.dl-horizontal
+              - each dokumente, version in thema.dokumenteByVersion
+                dt #{datum}
+                dd
+                  - each dokument in dokumente
+                    a(href='#{dokument.dokumentURL}') #{dokument.dokumentURLText}
+                    p #{dokument.inhalt}
+                    p
+                      - each tag in dokument.tags
+                        button.btn.btn-mini.btn-info(type="button" class='#{tag.class}') #{tag.text}

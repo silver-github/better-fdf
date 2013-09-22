@@ -84,11 +84,25 @@ module.exports = (function() {
 
 												entry.tags = [];
 
-												entry.tags.push(entry.status);
-												entry.tags.push(entry.bearbeiter);
-												entry.tags.push(entry.bezugsdokument);
-												entry.tags.push(entry.version);
-												entry.tags.push(entry.thema);
+												if(entry.status) {
+													entry.tags.push({text: entry.status, class: 'btn-info'});
+												}
+
+												if(entry.bezugsdokument) {
+													entry.tags.push({text: entry.bezugsdokument, class: 'btn-info'});
+												}
+
+												if(entry.version) {
+													entry.tags.push({text: entry.version, class: 'btn-info'});
+												}
+
+												if(entry.thema) {
+													entry.tags.push({text: entry.thema, class: 'btn-info'});
+												}
+
+												if(entry.bearbeiter && false) {
+													entry.tags.push({text: entry.bearbeiter, class: 'btn-info'});
+												}
 
 												entry.tags = _.union(entry.tags);
 
@@ -172,11 +186,25 @@ module.exports = (function() {
 
 											entry.tags = [];
 
-											entry.tags.push(entry.status);
-											entry.tags.push(entry.bearbeiter);
-											entry.tags.push(entry.bezugsdokument);
-											entry.tags.push(entry.version);
-											entry.tags.push(entry.thema);
+											if(entry.status) {
+												entry.tags.push({text: entry.status, class: 'btn-info'});
+											}
+
+											if(entry.bezugsdokument) {
+												entry.tags.push({text: entry.bezugsdokument, class: 'btn-info'});
+											}
+
+											if(entry.version) {
+												entry.tags.push({text: entry.version, class: 'btn-info'});
+											}
+
+											if(entry.thema) {
+												entry.tags.push({text: entry.thema, class: 'btn-info'});
+											}
+
+											if(entry.bearbeiter && false) {
+												entry.tags.push({text: entry.bearbeiter, class: 'btn-info'});
+											}
 
 											entry.tags = _.union(entry.tags);
 
@@ -202,7 +230,144 @@ module.exports = (function() {
 
 			});
 
-		}, function(callback) {
+		}, /*function(callback) {
+
+			request({ uri: urls.dokumente, method: 'GET', encoding: 'binary' }, function(err, response, body) {
+
+				if(err) { callback(err); return; }
+
+				var $ = cheerio.load(body), parallelStack = [];
+
+				eventEmitter.emit('urlFetched', urls.dokumente);
+
+				$('.cat').each(function() {
+
+					var url = $(this).attr('href'), betterUrl = 'http://fdf.vdew.net' + url, idSuffix = $(this).attr('id');
+
+					parallelStack.push(function(callback) {
+
+						request({ uri: betterUrl, method: 'GET', encoding: 'binary' }, function(err, response, body) {
+
+							if(err) { callback(err); return; }
+
+							var $ = cheerio.load(body), parallelStack = [];
+
+							eventEmitter.emit('urlFetched', betterUrl);
+
+							$('a[id^="' + idSuffix + '."]').each(function() {
+
+								var url = $(this).attr('href'), betterUrl = 'http://fdf.vdew.net' + url, idSuffix = $(this).attr('id');
+
+								parallelStack.push(function(callback) {
+
+									request({ uri: betterUrl, method: 'GET', encoding: 'binary' }, function(err, response, body) {
+
+										if(err) { callback(err); return; }
+
+										var $ = cheerio.load(body), parallelStack = [];
+
+										eventEmitter.emit('urlFetched', betterUrl);
+
+										$('a[id^="' + idSuffix + '."]').each(function() {
+
+											var url = $(this).attr('href'), betterUrl = 'http://fdf.vdew.net' + url;
+
+											parallelStack.push(function(callback) {
+
+												request({ uri: betterUrl, method: 'GET', encoding: 'binary' }, function(err, response, body) {
+
+													if(err) { callback(err); return; }
+
+													var $ = cheerio.load(body), parallelStack = [];
+
+													eventEmitter.emit('urlFetched', betterUrl);
+
+													$('td[width="480"] a').each(function() {
+														var url = $(this).attr('href'), betterUrl = 'http://fdf.vdew.net' + url;
+														if(url.substring(0,22) == '/wysvde/dataforum.nsf/') {
+
+															parallelStack.push(function(callback) {
+
+																request({ uri: betterUrl, method: 'GET', encoding: 'binary' }, function(err, response, body) {
+
+																	if(err) { callback(err); return; }
+
+																	var $ = cheerio.load(body), entry = {};
+
+																	eventEmitter.emit('urlFetched', betterUrl);
+
+																	entry.type 					= 'dokumente';
+																	entry.thema 				= checkString($('input[name="Thema"]').val());
+																	entry.dokumententyp 		= checkString($('input[name="Dokumententyp"]').val());
+																	entry.version 				= checkString($('input[name="Version"]').val());
+
+																	var datum 					= $('input[name="Datum"]').val(), datumsArray = datum.split(".");
+																	entry.timestamp				= Math.round(new Date(parseInt(datumsArray[2], 10), parseInt(datumsArray[1], 10) - 1 , parseInt(datumsArray[0]), 10).getTime() / 1000);
+
+																	entry.titel 				= checkString($('input[name="Titel"]').val());
+																	entry.inhalt 				= checkString($('input[name="Inhalt"]').val());
+																	entry.status 				= checkString($('input[name="StatusExtern"]').val());
+																	entry.dokmentURL			= checkString($('#vwperson a').href());
+																	entry.dokmentURLText		= checkString($('#vwperson a').text());
+																	entry.hash 					= crypto.createHash('md5').update(body).digest("hex");
+
+																	entry.url = betterUrl;
+
+																	entry.tags = [];
+
+																	if(entry.status) {
+																		entry.tags.push({text: entry.status, class: 'btn-info'});
+																	}
+
+																	if(entry.version) {
+																		entry.tags.push({text: entry.version, class: 'btn-info'});
+																	}
+
+																	if(entry.thema) {
+																		entry.tags.push({text: entry.thema, class: 'btn-info'});
+																	}
+
+																	entry.tags = _.union(entry.tags);
+
+																	eventEmitter.emit('entryToCheck', entry);
+
+																	callback();
+
+																});
+
+															});
+														}
+													});
+
+													async.parallel(parallelStack, callback);
+
+												});
+
+											});
+
+											async.parallel(parallelStack, callback);
+
+										});
+
+									});
+
+								});
+
+								async.parallel(parallelStack, callback);
+
+							});
+
+						});
+
+					});
+
+				});
+
+				async.parallel(parallelStack, callback);
+
+			});
+
+		},*/ function(callback) {
 
 			/*request(urls.dokumente, function(error, response, body) {
 
@@ -286,11 +451,16 @@ module.exports = (function() {
 						hash: entry.hash,
 						timestamp: entry.timestamp,
 						frage: shortLongString(removeBR(entry.frage), lenght),
-						kurzantwort: removeBR(entry.kurzantwort)
+						kurzantwort: removeBR(entry.kurzantwort),
+						tags: entry.tags
 					});
 				}
 
 			}
+
+			_.sortBy(thema.fragen, function(frage){ 
+				return frage.timestamp;
+			});
 
 			return result;
 
@@ -309,16 +479,21 @@ module.exports = (function() {
 						hash: entry.hash, 
 						timestamp: entry.timestamp, 
 						problembeschreibung: shortLongString(removeBR(entry.problembeschreibung), lenght), 
-						kurzantwort: removeBR(entry.kurzantwort)
+						kurzantwort: removeBR(entry.kurzantwort),
+						tags: entry.tags
 					});
 				}
 
 			}
 
+			_.sortBy(thema.anforderungen, function(anforderung){ 
+				return anforderung.timestamp;
+			});
+
 			return result;
 
 		},
-		getDoc: function(hash) {
+		getDokumente: function(hash) {
 
 			var result = {};
 
@@ -326,12 +501,21 @@ module.exports = (function() {
 
 				var entry = currentData[i];
 
-				if(entry.hash == hash) {
-					entry.kurzantwort = removeBR(entry.kurzantwort);
-					return entry;
+				if(entry.type == 'dokumente') {
+					var idThema = makeIDThema(entry.thema), thema = result[idThema] = result[idThema] || { titel: entry.thema, dokumente: [] };
+					thema.dokumente.push({
+						hash: entry.hash, 
+						timestamp: entry.timestamp, 
+						inhalt: entry.problembeschreibung, 
+						dokmentURL: entry.dokmentURL,
+						dokmentURLText: entry.dokmentURLText,
+						tags: entry.tags
+					});
 				}
 
 			}
+
+			return result;
 
 		}
 

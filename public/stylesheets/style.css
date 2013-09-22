@@ -199,6 +199,11 @@ body {
   overflow: hidden;
 }
 
+.bs-docs-section .btn {
+  font-size: 12px;
+  margin: 2px;
+}
+
 @media screen and (min-width: 768px) {
   .bs-social {
     text-align: left;
