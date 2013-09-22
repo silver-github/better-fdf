@@ -452,7 +452,8 @@ module.exports = (function() {
 						timestamp: entry.timestamp,
 						frage: shortLongString(removeBR(entry.frage), lenght),
 						kurzantwort: removeBR(entry.kurzantwort),
-						tags: entry.tags
+						tags: entry.tags,
+						url: entry.url
 					});
 				}
 
@@ -480,7 +481,8 @@ module.exports = (function() {
 						timestamp: entry.timestamp, 
 						problembeschreibung: shortLongString(removeBR(entry.problembeschreibung), lenght), 
 						kurzantwort: removeBR(entry.kurzantwort),
-						tags: entry.tags
+						tags: entry.tags,
+						url: entry.url
 					});
 				}
 
