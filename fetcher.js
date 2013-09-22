@@ -517,6 +517,22 @@ module.exports = (function() {
 
 			return result;
 
+		},
+		getDoc: function(hash) {
+
+			var result = {};
+
+			for (var i = 0; i < currentData.length; i++) {
+
+				var entry = currentData[i];
+
+				if(entry.hash == hash) {
+					entry.kurzantwort = removeBR(entry.kurzantwort);
+					return entry;
+				}
+
+			}
+
 		}
 
 	}
