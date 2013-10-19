@@ -3,12 +3,13 @@
  * GET home page.
  */
 
-module.exports = function(data) {
+module.exports = function(data, fetcher) {
 
-  data.extend({ title: 'Express' });
+  
 
   return  function(req, res){
-    res.render('dokumenteDetails', data);
+  	var dokument = fetcher.getDoc(req.params.hash);
+    res.redirect(dokument.url); 
   }
   
 }

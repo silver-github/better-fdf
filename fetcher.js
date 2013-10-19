@@ -1,4 +1,4 @@
-var request = require('request'), async = require('async'), cheerio = require('cheerio'), _ = require('underscore'), events = require('events'), crypto = require('crypto');
+var request = require('request'), async = require('async'), cheerio = require('cheerio'), _ = require('underscore'), events = require('events'), crypto = require('crypto'), S = require('string');
 
 module.exports = (function() {
 	
@@ -11,6 +11,8 @@ module.exports = (function() {
 	}
 
 	var checkString = function(text) {
+
+		if(!text) { return; }
 
 		var array = {"\r":"<br>", "\t":"&emsp;"}
 
@@ -33,6 +35,9 @@ module.exports = (function() {
 
 				var $ = cheerio.load(body), parallelStack = [];
 
+				body 		= undefined;
+				response 	= undefined;
+
 				eventEmitter.emit('urlFetched', urls.fragen);
 
 				$('.cat').each(function() {
@@ -46,7 +51,10 @@ module.exports = (function() {
 							if(err) { callback(err); return; }
 
 								var $ = cheerio.load(body), parallelStack = [];
-			
+
+								body 		= undefined;
+								response 	= undefined;
+
 								eventEmitter.emit('urlFetched', betterUrl);
 
 								$('td[width="464"] a').each(function() {
@@ -62,6 +70,9 @@ module.exports = (function() {
 
 												var $ = cheerio.load(body), entry = {};
 
+												body 		= undefined;
+												response 	= undefined;
+															
 												eventEmitter.emit('urlFetched', betterUrl);
 
 												entry.type 				= 'frage';
@@ -72,15 +83,15 @@ module.exports = (function() {
 												var datum 				= $('input[name="Datum"]').val(), datumsArray = datum.split(".");
 												entry.timestamp			= Math.round(new Date(parseInt(datumsArray[2], 10), parseInt(datumsArray[1], 10) - 1 , parseInt(datumsArray[0]), 10).getTime() / 1000);
 											
-												entry.frage 			= checkString($('input[name="Frage"]').val());
-												entry.textbezug 		= checkString($('input[name="BezugText"]').val());
-												entry.kurzantwort 		= checkString($('input[name="Antwort"]').val());
-												entry.antwort 			= checkString($('input[name="AntwortRTF"]').val());
+												entry.frage 			= checkString($('input[name="Frage"]').val())					|| '';
+												entry.textbezug 		= checkString($('input[name="BezugText"]').val())				|| '';
+												entry.kurzantwort 		= checkString($('input[name="Antwort"]').val())					|| '';
+												entry.antwort 			= checkString($('input[name="AntwortRTF"]').val())				|| '';
 												entry.status 			= checkString($('input[name="StatusExtern"]').val());
 												entry.bearbeiter 		= checkString($('input[name="Bearbeiter"]').val());
-												entry.hash 				= crypto.createHash('md5').update(body).digest("hex");
 
-												entry.url = betterUrl;
+												entry.url 					= betterUrl;
+												entry.hash 					= crypto.createHash('md5').update(entry.url).digest("hex");
 
 												entry.tags = [];
 
@@ -136,6 +147,9 @@ module.exports = (function() {
 
 				var $ = cheerio.load(body), parallelStack = [];
 
+				body 		= undefined;
+				response 	= undefined;
+
 				eventEmitter.emit('urlFetched', urls.anforderungen);
 
 				$('.cat').each(function() {
@@ -150,6 +164,9 @@ module.exports = (function() {
 
 							var $ = cheerio.load(body), parallelStack = [];
 
+							body 		= undefined;
+							response 	= undefined;
+
 							eventEmitter.emit('urlFetched', betterUrl);
 
 							$('td[width="464"] a').each(function() {
@@ -163,6 +180,9 @@ module.exports = (function() {
 
 											var $ = cheerio.load(body), entry = {};
 
+											body 		= undefined;
+											response 	= undefined;
+
 											eventEmitter.emit('urlFetched', betterUrl);
 
 											entry.type 					= 'anforderungen';
@@ -173,16 +193,16 @@ module.exports = (function() {
 											var datum 					= $('input[name="Datum"]').val(), datumsArray = datum.split(".");
 											entry.timestamp				= Math.round(new Date(parseInt(datumsArray[2], 10), parseInt(datumsArray[1], 10) - 1 , parseInt(datumsArray[0]), 10).getTime() / 1000);
 
-											entry.anforderung 			= checkString($('input[name="Anforderung"]').val());
-											entry.problembeschreibung 	= checkString($('input[name="Problembeschreibung"]').val());
-											entry.bezugtext 			= checkString($('input[name="BezugText"]').val());
-											entry.kurzantwort 			= checkString($('input[name="Antwort"]').val());
-											entry.antwort 				= checkString($('input[name="AntwortRTF"]').val());
+											entry.anforderung 			= checkString($('input[name="Anforderung"]').val())					|| '';
+											entry.problembeschreibung 	= checkString($('input[name="Problembeschreibung"]').val())			|| '';
+											entry.bezugtext 			= checkString($('input[name="BezugText"]').val())					|| '';
+											entry.kurzantwort 			= checkString($('input[name="Antwort"]').val())						|| '';
+											entry.antwort 				= checkString($('input[name="AntwortRTF"]').val())					|| '';
 											entry.status 				= checkString($('input[name="StatusExtern"]').val());
 											entry.bearbeiter 			= checkString($('input[name="Bearbeiter"]').val());
-											entry.hash 					= crypto.createHash('md5').update(body).digest("hex");
 
-											entry.url = betterUrl;
+											entry.url 					= betterUrl;
+											entry.hash 					= crypto.createHash('md5').update(entry.url).digest("hex");
 
 											entry.tags = [];
 
@@ -230,13 +250,16 @@ module.exports = (function() {
 
 			});
 
-		}, /*function(callback) {
+		}, function(callback) {
 
 			request({ uri: urls.dokumente, method: 'GET', encoding: 'binary' }, function(err, response, body) {
 
 				if(err) { callback(err); return; }
 
 				var $ = cheerio.load(body), parallelStack = [];
+
+				body 		= undefined;
+				response 	= undefined;
 
 				eventEmitter.emit('urlFetched', urls.dokumente);
 
@@ -252,6 +275,9 @@ module.exports = (function() {
 
 							var $ = cheerio.load(body), parallelStack = [];
 
+							body 		= undefined;
+							response 	= undefined;
+
 							eventEmitter.emit('urlFetched', betterUrl);
 
 							$('a[id^="' + idSuffix + '."]').each(function() {
@@ -265,6 +291,9 @@ module.exports = (function() {
 										if(err) { callback(err); return; }
 
 										var $ = cheerio.load(body), parallelStack = [];
+
+										body 		= undefined;
+										response 	= undefined;
 
 										eventEmitter.emit('urlFetched', betterUrl);
 
@@ -280,10 +309,14 @@ module.exports = (function() {
 
 													var $ = cheerio.load(body), parallelStack = [];
 
+													body 		= undefined;
+													response 	= undefined;
+
 													eventEmitter.emit('urlFetched', betterUrl);
 
 													$('td[width="480"] a').each(function() {
 														var url = $(this).attr('href'), betterUrl = 'http://fdf.vdew.net' + url;
+														
 														if(url.substring(0,22) == '/wysvde/dataforum.nsf/') {
 
 															parallelStack.push(function(callback) {
@@ -293,6 +326,9 @@ module.exports = (function() {
 																	if(err) { callback(err); return; }
 
 																	var $ = cheerio.load(body), entry = {};
+
+																	body 		= undefined;
+																	response 	= undefined;
 
 																	eventEmitter.emit('urlFetched', betterUrl);
 
@@ -304,14 +340,14 @@ module.exports = (function() {
 																	var datum 					= $('input[name="Datum"]').val(), datumsArray = datum.split(".");
 																	entry.timestamp				= Math.round(new Date(parseInt(datumsArray[2], 10), parseInt(datumsArray[1], 10) - 1 , parseInt(datumsArray[0]), 10).getTime() / 1000);
 
-																	entry.titel 				= checkString($('input[name="Titel"]').val());
-																	entry.inhalt 				= checkString($('input[name="Inhalt"]').val());
+																	entry.titel 				= checkString($('input[name="Titel"]').val())			 	|| '';
+																	entry.inhalt 				= checkString($('input[name="Inhalt"]').val())				|| '';
 																	entry.status 				= checkString($('input[name="StatusExtern"]').val());
-																	entry.dokmentURL			= checkString($('#vwperson a').href());
-																	entry.dokmentURLText		= checkString($('#vwperson a').text());
-																	entry.hash 					= crypto.createHash('md5').update(body).digest("hex");
+																	entry.dokumentURL			= checkString($('#vwperson a').first().attr('href'));
+																	entry.dokumentURLText		= checkString($('#vwperson a').first().text());
 
-																	entry.url = betterUrl;
+																	entry.url 					= betterUrl;
+																	entry.hash 					= crypto.createHash('md5').update(entry.url).digest("hex");
 
 																	entry.tags = [];
 
@@ -338,24 +374,24 @@ module.exports = (function() {
 															});
 														}
 													});
-
+													
 													async.parallel(parallelStack, callback);
 
 												});
 
 											});
 
-											async.parallel(parallelStack, callback);
-
 										});
+
+										async.parallel(parallelStack, callback);
 
 									});
 
 								});
 
-								async.parallel(parallelStack, callback);
-
 							});
+
+							async.parallel(parallelStack, callback);
 
 						});
 
@@ -367,7 +403,7 @@ module.exports = (function() {
 
 			});
 
-		},*/ function(callback) {
+		}, function(callback) {
 
 			/*request(urls.dokumente, function(error, response, body) {
 
@@ -427,16 +463,20 @@ module.exports = (function() {
 	}
 
 	var shortLongString = function(text, lenght) {
-		if(!lenght) {return;}
+		if(!lenght || !text) {return;}
 		return text.substring(0, lenght) + '...';
 	}
 
 	var removeBR = function(text) {
+		if(!text) {return;}
 		return text.replace(/<br>/g, ' ');
 	}
 
 	var fetcher = {
 		events: eventEmitter,
+		getAll: function() {
+			return currentData;
+		},
 		getFragen: function(lenght) {
 
 			var result = {};
@@ -450,8 +490,8 @@ module.exports = (function() {
 					thema.fragen.push({
 						hash: entry.hash,
 						timestamp: entry.timestamp,
-						frage: shortLongString(removeBR(entry.frage), lenght),
-						kurzantwort: removeBR(entry.kurzantwort),
+						frage: shortLongString(S(entry.frage).stripTags().s, lenght),
+						kurzantwort: removeBR(S(entry.kurzantwort).stripTags().s),
 						tags: entry.tags,
 						url: entry.url
 					});
@@ -479,8 +519,8 @@ module.exports = (function() {
 					thema.anforderungen.push({
 						hash: entry.hash, 
 						timestamp: entry.timestamp, 
-						problembeschreibung: shortLongString(removeBR(entry.problembeschreibung), lenght), 
-						kurzantwort: removeBR(entry.kurzantwort),
+						problembeschreibung: shortLongString(S(entry.problembeschreibung).stripTags().s, lenght), 
+						kurzantwort: removeBR(S(entry.kurzantwort).stripTags().s),
 						tags: entry.tags,
 						url: entry.url
 					});
@@ -497,20 +537,24 @@ module.exports = (function() {
 		},
 		getDokumente: function(hash) {
 
-			var result = {};
+			var result = {}, dokumente;
 
-			for (var i = 0; i < currentData.length; i++) {
+			dokumente = _.sortBy(currentData, function(dokument){ return -dokument.timestamp; });
 
-				var entry = currentData[i];
+			for (var i = 0; i < dokumente.length; i++) {
+
+				var entry = dokumente[i];
 
 				if(entry.type == 'dokumente') {
 					var idThema = makeIDThema(entry.thema), thema = result[idThema] = result[idThema] || { titel: entry.thema, dokumente: [] };
 					thema.dokumente.push({
 						hash: entry.hash, 
 						timestamp: entry.timestamp, 
-						inhalt: entry.problembeschreibung, 
-						dokmentURL: entry.dokmentURL,
-						dokmentURLText: entry.dokmentURLText,
+						inhalt: S(entry.inhalt).stripTags().s, 
+						status: entry.status, 
+						dokumentURL: entry.dokumentURL,
+						dokumentURLText: entry.dokumentURLText,
+						version: entry.version,
 						tags: entry.tags
 					});
 				}

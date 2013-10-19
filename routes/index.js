@@ -29,85 +29,125 @@ module.exports = {
   dokumenteDetails:     require('./dokumenteDetails')(data, fetcher),
   codenummern:          require('./codenummern')(data, fetcher),
   codenummernDetails:   require('./codenummernDetails')(data, fetcher),
+  api:                  require('./api')(data, fetcher),
   rss: {
-  fragen: function(req, res) {
-  
-  var fragen = fetcher.getFragen();
-  
-    var feed = new Feed({
-        title:          'Fragen',
-        description:    'Alle Fragen die bereits eingereicht wurden können Sie hier einsehen. ',
-        link:           '/fragen',
-        //image:          'http://example.com/logo.png',
-        //copyright:      'Copyright © 2013 John Doe. All rights reserved',
-
-        author: {
-            name:       'BDEW Bundesverband der Energie- und Wasserwirtschaft e.V.',
-            email:      'info@bdew.de',
-            link:       'http://fdf.vdew.net'
-        }
-    });
-  
-  for(var themaID in fragen) {
+    fragen: function(req, res) {
     
-    for(var name in fragen[themaID].fragen) {
+      var fragen = fetcher.getFragen();
       
-      feed.item({
-        title:          fragen[themaID].titel,
-        link:           'http://fdf.rguttroff.de/fragen/' + fragen[themaID].fragen[name].hash,
-        description:    fragen[themaID].fragen[name].frage,
-        date:           new Date(fragen[themaID].fragen[name].timestamp * 1000) || new Date()
-      });
-    
-    }
-  
-  }
-  
-  res.set('Content-Type', 'text/xml');
+        var feed = new Feed({
+            title:          'Fragen',
+            description:    'Alle Fragen die bereits eingereicht wurden können Sie hier einsehen. ',
+            link:           '/fragen',
+            //image:          'http://example.com/logo.png',
+            //copyright:      'Copyright © 2013 John Doe. All rights reserved',
 
-  // Sending the feed as a response
-  res.send(feed.render('rss-2.0'));
-
-  
-  },
-  anforderungen: function(req, res) {
-  
-  var anforderungen = fetcher.getAnforderungen();
-  
-    var feed = new Feed({
-        title:          'Anforderungen',
-        description:    'Hier können alle eingerichten Anforderungen eingesehen werden.',
-        link:           '/anforderungen',
-        //image:          'http://example.com/logo.png',
-        //copyright:      'Copyright © 2013 John Doe. All rights reserved',
-
-        author: {
-            name:       'BDEW Bundesverband der Energie- und Wasserwirtschaft e.V.',
-            email:      'info@bdew.de',
-            link:       'http://fdf.vdew.net'
+            author: {
+                name:       'BDEW Bundesverband der Energie- und Wasserwirtschaft e.V.',
+                email:      'info@bdew.de',
+                link:       'http://fdf.vdew.net'
+            }
+        });
+      
+      for(var themaID in fragen) {
+        
+        for(var name in fragen[themaID].fragen) {
+          
+          feed.item({
+            title:          fragen[themaID].titel,
+            link:           'http://fdf.rguttroff.de/fragen/' + fragen[themaID].fragen[name].hash,
+            description:    fragen[themaID].fragen[name].frage,
+            date:           new Date(fragen[themaID].fragen[name].timestamp * 1000) || new Date()
+          });
+        
         }
-    });
-  
-  for(var themaID in anforderungen) {
+      
+      }
+      
+      res.set('Content-Type', 'text/xml');
+
+      // Sending the feed as a response
+      res.send(feed.render('rss-2.0'));
+
     
-    for(var name in anforderungen[themaID].anforderungen) {
+    },
+    anforderungen: function(req, res) {
     
-      feed.item({
-        title:          anforderungen[themaID].titel,
-        link:           'http://fdf.rguttroff.de/anforderungen/' + anforderungen[themaID].anforderungen[name].hash,
-        description:    anforderungen[themaID].anforderungen[name].problembeschreibung,
-        date:           new Date(anforderungen[themaID].anforderungen[name].timestamp * 1000) || new Date()
-      });
+      var anforderungen = fetcher.getAnforderungen();
+      
+        var feed = new Feed({
+            title:          'Anforderungen',
+            description:    'Hier können alle eingerichten Anforderungen eingesehen werden.',
+            link:           '/anforderungen',
+            //image:          'http://example.com/logo.png',
+            //copyright:      'Copyright © 2013 John Doe. All rights reserved',
+
+            author: {
+                name:       'BDEW Bundesverband der Energie- und Wasserwirtschaft e.V.',
+                email:      'info@bdew.de',
+                link:       'http://fdf.vdew.net'
+            }
+        });
+      
+      for(var themaID in anforderungen) {
+        
+        for(var name in anforderungen[themaID].anforderungen) {
+        
+          feed.item({
+            title:          anforderungen[themaID].titel,
+            link:           'http://fdf.rguttroff.de/anforderungen/' + anforderungen[themaID].anforderungen[name].hash,
+            description:    anforderungen[themaID].anforderungen[name].problembeschreibung,
+            date:           new Date(anforderungen[themaID].anforderungen[name].timestamp * 1000) || new Date()
+          });
+        
+        }
+      
+      }
+
+      res.set('Content-Type', 'text/xml');
+
+      // Sending the feed as a response
+      res.send(feed.render('rss-2.0'));
+    
+    },
+    dokumente: function(req, res) {
+    
+      var dokumente = fetcher.getDokumente();
+      
+        var feed = new Feed({
+            title:          'Dokumente',
+            description:    'Hier können Sie alle veröffentlich Dokumente im Datenforum finden.',
+            link:           '/dokumente',
+            //image:          'http://example.com/logo.png',
+            //copyright:      'Copyright © 2013 John Doe. All rights reserved',
+
+            author: {
+                name:       'BDEW Bundesverband der Energie- und Wasserwirtschaft e.V.',
+                email:      'info@bdew.de',
+                link:       'http://fdf.vdew.net'
+            }
+        });
+      
+      for(var themaID in dokumente) {
+        
+        for(var name in dokumente[themaID].dokumente) {
+        
+          feed.item({
+            title:          dokumente[themaID].titel,
+            link:           'http://fdf.rguttroff.de/dokumente/' + dokumente[themaID].dokumente[name].hash,
+            description:    dokumente[themaID].dokumente[name].inhalt,
+            date:           new Date(dokumente[themaID].dokumente[name].timestamp * 1000) || new Date()
+          });
+        
+        }
+      
+      }
+
+      res.set('Content-Type', 'text/xml');
+
+      // Sending the feed as a response
+      res.send(feed.render('rss-2.0'));
     
     }
-  
-  }
-
-  res.set('Content-Type', 'text/xml');
-
-  // Sending the feed as a response
-  res.send(feed.render('rss-2.0'));
-  
-  },
   }
 }

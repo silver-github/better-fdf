@@ -3,11 +3,11 @@ extends layout
 block header
   div.bs-header#content
     h1 Dokmente
-    p ####
+    p Hier können Sie alle veröffentlich Dokumente im Datenforum finden.
   div.bs-old-docs
     strong
-      a(href='/rss/dokumente') ####
-    span  Sie möchte eine neue Anforderung einrichen? <a href="http://fdf.vdew.net/wysvde/dataforum.nsf/Anforderung?OpenForm&login" target="_blank">Hier</a> geht's zur richtigen Seite.
+      a(href='/rss/dokumente') Bleibe Sie auf dem neuesten Stand
+    span  Haben Sie Frage oder neue Anforderungen an die Datenformate? <a href="http://fdf.vdew.net/wysvde/dataforum.nsf/Anforderung?OpenForm&login" target="_blank">Hier</a> geht's zur richtigen Seite.
 
 block content
   div.bs-docs-container
@@ -25,11 +25,8 @@ block content
               h1(id='#{themaID}') #{thema.titel}
             dl.dl-horizontal
               - each dokumente, version in thema.dokumenteByVersion
-                dt #{datum}
+                dt #{version}
                 dd
                   - each dokument in dokumente
-                    a(href='#{dokument.dokumentURL}') #{dokument.dokumentURLText}
+                    a(href='/dokumente/#{dokument.hash}') #{dokument.dokumentURLText}
                     p #{dokument.inhalt}
-                    p
-                      - each tag in dokument.tags
-                        button.btn.btn-mini.btn-info(type="button" class='#{tag.class}') #{tag.text}

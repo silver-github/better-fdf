@@ -28,8 +28,10 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', 					routes.home);
+app.get('/api', 				routes.api);
 app.get('/rss/fragen', 			routes.rss.fragen);
 app.get('/rss/anforderungen', 	routes.rss.anforderungen);
+app.get('/rss/dokumente', 		routes.rss.dokumente);
 app.get('/fragen', 				routes.fragen);
 app.get('/fragen/:hash', 		routes.fragenDetails);
 app.get('/anforderungen', 		routes.anforderungen);

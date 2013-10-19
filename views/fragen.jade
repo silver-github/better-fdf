@@ -30,6 +30,3 @@ block content
                   - each frage in fragen
                     a(href='/fragen/#{frage.hash}') #{frage.frage}
                     p #{frage.kurzantwort}
-                    p
-                      - each tag in frage.tags
-                        button.btn.btn-mini.btn-info(type="button" class='#{tag.class}') #{tag.text}

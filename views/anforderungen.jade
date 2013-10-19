@@ -30,6 +30,3 @@ block content
                   - each anforderung in anforderungen
                     a(href='/anforderungen/#{anforderung.hash}') #{anforderung.problembeschreibung}
                     p #{anforderung.kurzantwort}
-                    p
-                      - each tag in anforderung.tags
-                        button.btn.btn-mini.btn-info(type="button" class='#{tag.class}') #{tag.text}
